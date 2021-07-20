@@ -7,6 +7,10 @@ import random
 #import colours
 from colours import *
 
+#import algorithms
+from algorithms.bubbleSort import bubble_sort
+from algorithms.mergeSort import merge_sort
+
 #Create window
 window=Tk()
 window.title("sorting Algo")
@@ -27,19 +31,69 @@ data = []
 
 #Draws the values in the array on screen as vertical bars
 def drawData(data, colourArray):
-    pass
+    #clears the screen
+    canvas.delete("all")
+    #resolution
+    canvas_width = 800
+    canvas_height = 400
+    #the width of the UI is the width of the canvas divided by all
+    #the numbers in the array + 1
+    x_width = canvas_width / (len(data)+1)
+    #for better UI
+    offset = 4
+    spacing = 2
+    #makes the data better to use in for the UI
+    normalizedData = [i / max(data) for i in data]
+
+    #for each value in the array, it creates a rectangle of it's size
+    ## loops over the data points but assigns a count to each data value
+    for i, height in enumerate(normalizedData):
+        #bottom left point, sets the point on the screen 
+        x0 = i* x_width + offset + spacing
+        #top left point
+        y0 = canvas_height - height * 390
+        #bottom right point
+        x1 = (i+1)*x_width + offset
+        #top right point
+        y1 = canvas_height
+        #creates the rectangle given the points, fills in the colour
+        canvas.create_rectangle(x0, y0, x1, y1, fill=colourArray[i])
+
+    window.update_idletasks()
 
 #Creates an array with random values
 def generate():
-    pass
+    #creates an array that everything can use
+    global data
+    data = []
+
+    #find a random number, puts it in the array
+    for i in range(0,100):
+        random_value = random.randint(1, 150)
+        data.append(random_value)
+
+    #call Draw data to create all the rectangles and colour it all blue
+    drawData(data, [BLUE for x in range(len(data))])
 
 #Set the speed
 def set_speed():
-    pass
+    if speed_menu.get() == 'Slow':
+        return 0.3
+    elif speed_menu.get() == 'Medium':
+        return 0.1
+    else:
+        return 0.001
 
 #trigger the algorithm and sorts
 def sort():
-    pass
+    global data
+    timeTick = set_speed()
+
+    if algo_menu.get() == 'Bubble Sort':
+        bubble_sort(data, drawData, timeTick)
+    
+    elif algo_menu.get() == 'Merge Sort':
+        merge_sort(data, 0, (len(data)-1), drawData, timeTick)
 
 #User interface ############
 
