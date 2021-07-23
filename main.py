@@ -11,6 +11,7 @@ from colours import *
 from algorithms.bubbleSort import bubble_sort
 from algorithms.mergeSort import merge_sort
 from algorithms.quickSort import quick_sort
+from algorithms.insertionSort import insertion_sort
 
 #Create window
 window=Tk()
@@ -21,7 +22,7 @@ window.config(bg = WHITE)
 
 algorithm_name = StringVar()
 #an array to choose which algo to run
-algo_list = ['Bubble Sort', 'Merge Sort', 'Quick Sort']
+algo_list = ['Bubble Sort','Insertion Sort', 'Merge Sort', 'Quick Sort']
 
 speed_name = StringVar()
 #choosing the speed of the sort
@@ -79,11 +80,11 @@ def generate():
 #Set the speed
 def set_speed():
     if speed_menu.get() == 'Slow':
-        return 0.3
+        return 0.5
     elif speed_menu.get() == 'Medium':
-        return 0.1
+        return 0.05
     else:
-        return 0.0001
+        return 0.005
 
 #trigger the algorithm and sorts
 def sort():
@@ -92,6 +93,9 @@ def sort():
 
     if algo_menu.get() == 'Bubble Sort':
         bubble_sort(data, drawData, timeTick)
+
+    elif algo_menu.get() == 'Insertion Sort':
+        insertion_sort(data, drawData, timeTick)
     
     elif algo_menu.get() == 'Merge Sort':
         merge_sort(data, 0, (len(data)-1), drawData, timeTick)
