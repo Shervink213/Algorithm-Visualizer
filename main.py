@@ -1,5 +1,7 @@
 from tkinter import*
 from tkinter import ttk
+from tkinter import messagebox
+
 
 #to create an array
 import random
@@ -28,6 +30,8 @@ algo_list = ['Bubble Sort','Insertion Sort','Selection Sort', 'Merge Sort', 'Qui
 speed_name = StringVar()
 #choosing the speed of the sort
 speed_list = ['Fast', 'Medium', 'Slow']
+
+num_data = IntVar()
 
 #an empty list to fill with random numbers for the algos to sort
 data = []
@@ -64,14 +68,26 @@ def drawData(data, colourArray):
 
     window.update_idletasks()
 
+#picks how much data to sort
+def numData():
+    try:
+        val = int(data_entry.get())
+        if (val < 0):
+            raise ValueError
+        generate(val)
+    except ValueError:
+        messagebox.showerror(title = 'Error', message= 'You must enter a positive integer')
+
+
+
 #Creates an array with random values
-def generate():
+def generate(input):
     #creates an array that everything can use
     global data
     data = []
 
     #find a random number, puts it in the array
-    for i in range(0,100):
+    for i in range(0,input):
         random_value = random.randint(1, 150)
         data.append(random_value)
 
@@ -131,13 +147,19 @@ speed_menu = ttk.Combobox(UI_frame, textvariable=speed_name, values=speed_list)
 speed_menu.grid(row=1, column=1, padx=5, pady=5)
 speed_menu.current(0)
 
+#number of data entry
+L3 = Label(UI_frame, text = "How many to sort: ", bg= WHITE)
+L3.grid(row = 2, column= 0, padx = 10, pady = 5, sticky=W)
+data_entry = ttk.Entry(UI_frame, textvariable = num_data)
+data_entry.grid(row = 2, column= 1, padx=5, pady=5 )
+
 #sort button
 b1 = Button(UI_frame, text="Sort", command=sort, bg=LIGHT_GRAY)
-b1.grid(row = 2, column=1, padx=5, pady=5)
+b1.grid(row = 3, column=1, padx=5, pady=5)
 
 #button for generating array
-b3 = Button(UI_frame, text = "Generate Array", command=generate, bg=LIGHT_GRAY)
-b3.grid(row = 2, column= 0, padx=5, pady=5)
+b3 = Button(UI_frame, text = "Generate Array", command=numData, bg=LIGHT_GRAY)
+b3.grid(row = 3, column= 0, padx=5, pady=5)
 
 #canvas for drawing the array
 canvas = Canvas(window, width=800, height=400, bg=WHITE)
